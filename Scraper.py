@@ -1,23 +1,20 @@
-from selenium import webdriver
 import configuration as cfg
+import urllib3
 
-DEFAULT_DRIVER_PATH = './chromedriver'
+class Scraper:
+    def __init__(self):
+        self.http = urllib3.PoolManager()
+        self.data = b""
 
-
-class NeweggScraper:
-    def __init__(self, driver_path=DEFAULT_DRIVER_PATH):
-        options = webdriver.ChromeOptions()
-        options.add_argument("--disable-extensions")
-        self.driver = webdriver.Chrome(options=options, executable_path=driver_path)
-
-    def load(self, url):
-        self.driver.get(url)
-
-    def close(self):
-        self.driver.close()
+    def refresh(self, url):
+        r = self.http.request('GET', url)
+        if r.status == 200:
+            self.data = r.data
+        else:
+            print("Error when loading the page")
 
     def count_word(self, word, verbose=True):
-        source = self.driver.page_source
+        source = self.data.decode('utf8')
         l = source.lower()
         word = word.lower()
         c = l.count(word)
@@ -29,9 +26,8 @@ class NeweggScraper:
 
 if __name__ == "__main__":
     c = cfg.get_configuration()
-    s = NeweggScraper()
-    s.load(c.scraper.url)
+    s = Scraper()
+    s.refresh(c.scraper.url)
     s.count_word("out of stock")
     s.count_word("sold out")
     s.count_word(c.scraper.grep)
-    s.close()

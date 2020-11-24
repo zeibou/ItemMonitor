@@ -1,4 +1,4 @@
-selenium
 playsound
 PyObjC
 AppKit
+urllib3

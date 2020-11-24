@@ -1,17 +1,17 @@
-from Scraper import NeweggScraper
+from Scraper import Scraper
 import time
 import datetime as dt
 import playsound
 import Notifier
 import configuration as cfg
 
-s = NeweggScraper()
 t = 0
 n = 0
 sold_out = True
 
 nc = cfg.get_configuration().notifier
 sc = cfg.get_configuration().scraper
+s = Scraper()
 playsound.playsound(nc.sound)
 Notifier.send_email(sc.item, "Test notifications", nc)
 
@@ -20,7 +20,7 @@ while True:
         print(dt.datetime.now(), f"  - checked {n} times")
         t = time.time()
         n = 0
-    s.load(sc.url)
+    s.refresh(sc.url)
     time.sleep(1)
     c = s.count_word(sc.grep, False)
     n += 1

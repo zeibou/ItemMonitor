@@ -1,7 +1,6 @@
 import os
 import json
 import logging
-from enum import Enum
 
 CONFIG_FILE_DEFAULT = "./config-default.json"
 CONFIG_FILE_PERSO = "./config.json"

@@ -4,7 +4,8 @@
     "sender": "***@gmail.com",
     "password": "********",
     "receivers": ["***@gmail.com", "1646******@tmomail.net"],
-    "sound": "/System/Library/Sounds/Glass.aiff"
+    "sound": "/System/Library/Sounds/Glass.aiff",
+    "sound_WINDOWS_REMINDER": "C:\\Windows\\Media\\tada.wav"
   },
   "scraper":
   {
