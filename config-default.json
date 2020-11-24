@@ -1,0 +1,15 @@
+{
+  "notifier":
+  {
+    "sender": "***@gmail.com",
+    "password": "********",
+    "receivers": ["***@gmail.com", "1646******@tmomail.net"],
+    "sound": "/System/Library/Sounds/Glass.aiff"
+  },
+  "scraper":
+  {
+    "item": "<item name>",
+    "url": "***.html",
+    "grep": "out_of_stock"
+  }
+}
