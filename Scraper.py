@@ -7,11 +7,13 @@ class Scraper:
         self.data = b""
 
     def refresh(self, url):
-        r = self.http.request('GET', url)
+        header = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1;Win64; x64)'}
+        r = self.http.request('GET', url, headers=header)
         if r.status == 200:
             self.data = r.data
         else:
             print("Error when loading the page")
+            print(r.data)
 
     def count_word(self, word, verbose=True):
         source = self.data.decode('utf8')
