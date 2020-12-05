@@ -48,7 +48,7 @@ sc = cfg.get_configuration().scraper
 # Notifier.send_email("scraper test", "Test notifications", nc)
 
 s = Scraper()
-items = [ItemChecker(s, i) for i in sc.items]
+items = [ItemChecker(s, i) for i in sc.items if i.enabled]
 t = time.time()
 n = 0
 

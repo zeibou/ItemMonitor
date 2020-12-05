@@ -22,6 +22,7 @@ class ScraperConfig:
 
 class ScraperItem:
     def __init__(self, dico):
+        self.enabled = dico.get("enabled", True)
         self.name = dico.get("name")
         self.url = dico.get("url")
         self.sold_out_regex = dico.get("sold_out_regex")

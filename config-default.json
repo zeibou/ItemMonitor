@@ -16,7 +16,7 @@
         "name": "<item name>",
         "url": "***.html",
         "sold_out_regex": "out_of_stock",
-        "price_regex": "...",
+        "price_regex": "...?([0-9.]*)...",
         "max_price": 99.99
       }
     ]
