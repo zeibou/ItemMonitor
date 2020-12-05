@@ -1,6 +1,7 @@
 import configuration as cfg
 import urllib3
 import os
+import re
 
 
 class Scraper:
@@ -27,6 +28,11 @@ class Scraper:
 
         return c
 
+    def find(self, regex):
+        source = self.data.decode('utf8')
+        matches = re.findall(regex, source)
+        return matches
+
     def save(self, folder, filename):
         os.makedirs(folder, exist_ok=True)
         filename = filename.replace(" ", "_")
@@ -38,5 +44,7 @@ class Scraper:
 if __name__ == "__main__":
     c = cfg.get_configuration()
     s = Scraper()
-    s.refresh(c.scraper.url)
-    s.count_word(c.scraper.grep)
+    for i in c.scraper.items:
+        s.refresh(i.url)
+        print(s.find(i.sold_out_regex))
+        print(s.find(i.price_regex))

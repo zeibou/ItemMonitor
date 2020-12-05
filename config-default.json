@@ -5,12 +5,20 @@
     "password": "********",
     "receivers": ["***@gmail.com", "1646******@tmomail.net"],
     "sound": "/System/Library/Sounds/Glass.aiff",
-    "sound_WINDOWS_REMINDER": "C:\\Windows\\Media\\tada.wav"
+    "output_path": "",
+    "sound_WINDOWS": "C:\\Windows\\Media\\tada.wav",
+    "sound_MAC": "/System/Library/Sounds/Glass.aiff"
   },
   "scraper":
   {
-    "item": "<item name>",
-    "url": "***.html",
-    "grep": "out_of_stock"
+    "items": [
+      {
+        "item": "<item name>",
+        "url": "***.html",
+        "sold_out_regex": "out_of_stock",
+        "price_regex": "...",
+        "max_price": 99.99
+      }
+    ]
   }
 }

@@ -12,13 +12,22 @@ class NotifierConfig:
         self.password = dico.get("password")
         self.receivers = dico.get("receivers")
         self.sound = dico.get("sound")
+        self.output_path = dico.get("output_path")
 
 
 class ScraperConfig:
     def __init__(self, dico):
-        self.item = dico.get("item")
+        self.items = [ScraperItem(i) for i in dico.get("items")]
+
+
+class ScraperItem:
+    def __init__(self, dico):
+        self.name = dico.get("name")
         self.url = dico.get("url")
-        self.grep = dico.get("grep")
+        self.sold_out_regex = dico.get("sold_out_regex")
+        self.price_regex = dico.get("price_regex")
+        self.max_price = dico.get("max_price")
+
 
 
 class Configuration:
