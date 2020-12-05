@@ -29,6 +29,8 @@ class Scraper:
         return c
 
     def find(self, regex):
+        if not regex:
+            return None
         source = self.data.decode('utf8')
         matches = re.findall(regex, source)
         return matches
@@ -37,8 +39,8 @@ class Scraper:
         os.makedirs(folder, exist_ok=True)
         filename = filename.replace(" ", "_")
         filename = filename.replace(":", "-")
-        with open(os.path.join(folder, filename), 'w') as f:
-            f.write(self.data.decode('utf-8'))
+        with open(os.path.join(folder, filename), 'w', encoding="utf") as f:
+            f.write(self.data.decode('utf8'))
 
 
 if __name__ == "__main__":
@@ -48,3 +50,4 @@ if __name__ == "__main__":
         s.refresh(i.url)
         print(s.find(i.sold_out_regex))
         print(s.find(i.price_regex))
+        s.save(c.notifier.output_path, f"test_{i.name}.html")

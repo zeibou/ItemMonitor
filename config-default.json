@@ -13,7 +13,7 @@
   {
     "items": [
       {
-        "item": "<item name>",
+        "name": "<item name>",
         "url": "***.html",
         "sold_out_regex": "out_of_stock",
         "price_regex": "...",

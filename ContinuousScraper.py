@@ -23,21 +23,21 @@ class ItemChecker:
         sold_out_match = self.scraper.find(self.item.sold_out_regex)
         if not sold_out_match:
             price = self.find_price()
-            if not price or price > self.item.max_price:
+            if price and price > self.item.max_price:
                 print(f"Available but price too high: {price}")
             elif self.sold_out:
                 now = str(dt.datetime.now())
-                print("AVAILABLE at " + now)
+                print(f"AVAILABLE at {now} for {price}")
                 playsound.playsound(nc.sound)
                 Notifier.send_email(self.item.name, "Item available", nc)
                 self.sold_out = False
                 self.scraper.save(nc.output_path, f"available_{self.item.name}_{now}.html")
         else:
             if not self.sold_out:
-                print("Sold out again at " + str(dt.datetime.now()))
+                now = str(dt.datetime.now())
+                print(f"Sold out again at {now}")
                 Notifier.send_email(self.item.name, "Item sold out", nc)
                 self.sold_out = True
-                now = str(dt.datetime.now())
                 self.scraper.save(nc.output_path, f"soldout_{self.item.name}_{now}.html")
 
 
