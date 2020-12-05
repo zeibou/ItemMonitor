@@ -1,5 +1,7 @@
 import configuration as cfg
 import urllib3
+import os
+
 
 class Scraper:
     def __init__(self):
@@ -25,11 +27,16 @@ class Scraper:
 
         return c
 
+    def save(self, folder, filename):
+        os.makedirs(folder, exist_ok=True)
+        filename = filename.replace(" ", "_")
+        filename = filename.replace(":", "-")
+        with open(os.path.join(folder, filename), 'w') as f:
+            f.write(self.data.decode('utf-8'))
+
 
 if __name__ == "__main__":
     c = cfg.get_configuration()
     s = Scraper()
     s.refresh(c.scraper.url)
-    s.count_word("out of stock")
-    s.count_word("sold out")
     s.count_word(c.scraper.grep)
