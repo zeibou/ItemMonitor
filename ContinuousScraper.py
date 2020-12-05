@@ -20,6 +20,8 @@ class ItemChecker:
 
     def poll(self):
         self.scraper.refresh(self.item.url)
+        if self.scraper.find(self.item.failed_load_regex):
+            return
         sold_out_match = self.scraper.find(self.item.sold_out_regex)
         if not sold_out_match:
             price = self.find_price()

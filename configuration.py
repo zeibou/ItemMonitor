@@ -28,6 +28,7 @@ class ScraperItem:
         self.sold_out_regex = dico.get("sold_out_regex")
         self.price_regex = dico.get("price_regex")
         self.max_price = dico.get("max_price")
+        self.failed_load_regex = dico.get("failed_load_regex")
 
 
 
