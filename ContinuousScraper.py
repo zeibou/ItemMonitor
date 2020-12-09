@@ -1,26 +1,28 @@
-from Scraper import Scraper
 import time
 import datetime as dt
 import playsound
 import Notifier
 import configuration as cfg
 from configuration import ScraperItem
+from Scraper import Scraper
 
 
 class ItemChecker:
-    def __init__(self, scraper: Scraper, item: ScraperItem):
-        self.scraper = scraper
+    def __init__(self, item: ScraperItem):
+        self.scraper = Scraper()
         self.item = item
         self.sold_out = True
+        self.triggered = False
 
     def find_price(self):
         price_matched = self.scraper.find(self.item.price_regex)
-        if price_matched and price_matched[0].isdigit():
+        if price_matched:
             return float(price_matched[0])
 
     def poll(self):
         self.scraper.refresh(self.item.url)
         if self.scraper.find(self.item.failed_load_regex):
+            print(f"failed loading {self.item.name}")
             return
         sold_out_match = self.scraper.find(self.item.sold_out_regex)
         if not sold_out_match:
@@ -29,18 +31,21 @@ class ItemChecker:
                 print(f"Available but price too high: {price}")
             elif self.sold_out:
                 now = str(dt.datetime.now())
-                print(f"AVAILABLE at {now} for {price}")
-                playsound.playsound(nc.sound)
-                Notifier.send_email(self.item.name, "Item available", nc)
+                print(f"{self.item.name} AVAILABLE at {now} for {price}: {self.item.url}")
+                if not self.triggered:
+                    playsound.playsound(nc.sound)
+                    Notifier.send_email(self.item.name, "Item available", nc)
+                    self.scraper.save(nc.output_path, f"available_{self.item.name}_{now}.html")
                 self.sold_out = False
-                self.scraper.save(nc.output_path, f"available_{self.item.name}_{now}.html")
         else:
             if not self.sold_out:
                 now = str(dt.datetime.now())
-                print(f"Sold out again at {now}")
-                Notifier.send_email(self.item.name, "Item sold out", nc)
+                print(f"{self.item.name} Sold out again at {now}")
+                if not self.triggered:
+                    Notifier.send_email(self.item.name, "Item sold out", nc)
+                    self.scraper.save(nc.output_path, f"soldout_{self.item.name}_{now}.html")
                 self.sold_out = True
-                self.scraper.save(nc.output_path, f"soldout_{self.item.name}_{now}.html")
+                self.triggered = True
 
 
 nc = cfg.get_configuration().notifier
@@ -49,8 +54,7 @@ sc = cfg.get_configuration().scraper
 # playsound.playsound(nc.sound)
 # Notifier.send_email("scraper test", "Test notifications", nc)
 
-s = Scraper()
-items = [ItemChecker(s, i) for i in sc.items if i.enabled]
+items = [ItemChecker(i) for i in sc.items if i.enabled]
 t = time.time()
 n = 0
 

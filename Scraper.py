@@ -15,8 +15,7 @@ class Scraper:
         if r.status == 200:
             self.data = r.data
         else:
-            print("Error when loading the page")
-            print(r.data)
+            print(f"Error when requesting {url}")
 
     def count_word(self, word, verbose=True):
         source = self.data.decode('utf8')
