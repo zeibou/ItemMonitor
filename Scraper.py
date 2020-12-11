@@ -17,16 +17,6 @@ class Scraper:
         else:
             print(f"Error when requesting {url}")
 
-    def count_word(self, word, verbose=True):
-        source = self.data.decode('utf8')
-        l = source.lower()
-        word = word.lower()
-        c = l.count(word)
-        if verbose:
-            print(word + "  " + str(c))
-
-        return c
-
     def find(self, regex):
         if not regex:
             return None
@@ -46,6 +36,9 @@ if __name__ == "__main__":
     c = cfg.get_configuration()
     s = Scraper()
     for i in c.scraper.items:
+        if not i.enabled:
+            continue
+        print(i.name)
         s.refresh(i.url)
         print(s.find(i.sold_out_regex))
         print(s.find(i.price_regex))

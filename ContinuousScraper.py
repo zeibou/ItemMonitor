@@ -1,5 +1,6 @@
 import time
 import datetime as dt
+import heapq
 import playsound
 import Notifier
 import configuration as cfg
@@ -54,18 +55,20 @@ sc = cfg.get_configuration().scraper
 # playsound.playsound(nc.sound)
 # Notifier.send_email("scraper test", "Test notifications", nc)
 
-items = [ItemChecker(i) for i in sc.items if i.enabled]
+items = [(0, k, ItemChecker(i)) for k, i in enumerate(sc.items) if i.enabled]
 t = time.time()
 n = 0
+heapq.heapify(items)
 
 while True:
     if time.time() - t > 60 * 10:
-        print(dt.datetime.now(), f"  - checked {n} times")
+        print(dt.datetime.now(), f"  - checked {n} urls in the past 10 minutes")
         t = time.time()
         n = 0
 
-    for i in items:
-        i.poll()
-
+    it, k, ii = heapq.heappop(items)
+    while it > time.time():
+        time.sleep(0.25)
+    ii.poll()
+    heapq.heappush(items, (time.time() + ii.item.frequency_seconds, k, ii))
     n += 1
-    time.sleep(3)

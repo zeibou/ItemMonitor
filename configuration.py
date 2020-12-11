@@ -29,6 +29,7 @@ class ScraperItem:
         self.price_regex = dico.get("price_regex")
         self.max_price = dico.get("max_price")
         self.failed_load_regex = dico.get("failed_load_regex")
+        self.frequency_seconds = dico.get("frequency_seconds", 5)
 
 
 
